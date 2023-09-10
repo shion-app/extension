@@ -5,12 +5,40 @@ interface Tab {
   name: string
 }
 
-type Website = 'bilibili'
+type Website = 'bilibili' | 'zhihu' | 'juejin' | 'google' | 'baidu' | 'youtube' | 'twitter' | 'github'
 
 export const tabList: Record<Website, Tab> = {
   bilibili: {
-    pattern: ['*://*.bilibili.com/**'],
+    pattern: ['*://*.bilibili.com{,/**}'],
     name: 'bilibili',
+  },
+  zhihu: {
+    pattern: ['*://*.zhihu.com{,/**}'],
+    name: '知乎',
+  },
+  juejin: {
+    pattern: ['*://juejin.cn{,/**}'],
+    name: '掘金',
+  },
+  google: {
+    pattern: ['*://*.google.*{,/**}'],
+    name: 'google',
+  },
+  baidu: {
+    pattern: ['*://*.baidu.com{,/**}'],
+    name: '百度',
+  },
+  youtube: {
+    pattern: ['*://*.youtube.com{,/**}'],
+    name: 'youtube',
+  },
+  twitter: {
+    pattern: ['*://twitter.com{,/**}'],
+    name: 'twitter',
+  },
+  github: {
+    pattern: ['*://github.com{,/**}'],
+    name: 'github',
   },
 }
 
