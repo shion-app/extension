@@ -1,7 +1,6 @@
-import { onMessage, sendMessage } from 'webext-bridge/background'
-import type { Tabs } from 'webextension-polyfill'
-
 // only on dev mode
+import { onMessage } from 'webext-bridge/background'
+
 if (import.meta.hot) {
   // @ts-expect-error for background HMR
   import('/@vite/client')
@@ -9,46 +8,35 @@ if (import.meta.hot) {
   import('./contentScriptHMR')
 }
 
-browser.runtime.onInstalled.addListener((): void => {
-  // eslint-disable-next-line no-console
-  console.log('Extension installed')
-})
+let port = 4040
 
-let previousTabId = 0
+const host = `http://localhost:${port}`
+
+onMessage('change-port', (v) => {
+  port = v.data.port
+})
 
 // communication example: send previous tab title from background page
 // see shim.d.ts for type declaration
 browser.tabs.onActivated.addListener(async ({ tabId }) => {
-  if (!previousTabId) {
-    previousTabId = tabId
-    return
-  }
-
-  let tab: Tabs.Tab
-
-  try {
-    tab = await browser.tabs.get(previousTabId)
-    previousTabId = tabId
-  }
-  catch {
-    return
-  }
-
-  // eslint-disable-next-line no-console
-  console.log('previous tab', tab)
-  sendMessage('tab-prev', { title: tab.title }, { context: 'content-script', tabId })
+  const { url, title } = await browser.tabs.get(tabId)
+  fetch(`${host}/browser-tab`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      url,
+      title,
+    }),
+  })
 })
 
-onMessage('get-current-tab', async () => {
-  try {
-    const tab = await browser.tabs.get(previousTabId)
-    return {
-      title: tab?.title,
-    }
-  }
-  catch {
-    return {
-      title: undefined,
-    }
-  }
-})
+browser.webRequest.onBeforeRequest.addListener(
+  (details) => {
+    // console.log(details)
+    // console.log(details.requestBody)
+  },
+  { urls: ['<all_urls>'] },
+  ['requestBody'],
+)
