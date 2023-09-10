@@ -1,5 +1,7 @@
 // only on dev mode
-import { onMessage } from 'webext-bridge/background'
+import { post } from '~/modules/fetch'
+import { request } from '~/modules/request'
+import { getWebsiteName } from '~/modules/tab'
 
 if (import.meta.hot) {
   // @ts-expect-error for background HMR
@@ -8,35 +10,22 @@ if (import.meta.hot) {
   import('./contentScriptHMR')
 }
 
-let port = 4040
-
-const host = `http://localhost:${port}`
-
-onMessage('change-port', (v) => {
-  port = v.data.port
-})
-
 // communication example: send previous tab title from background page
 // see shim.d.ts for type declaration
 browser.tabs.onActivated.addListener(async ({ tabId }) => {
   const { url, title } = await browser.tabs.get(tabId)
-  fetch(`${host}/browser-tab`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
+  const name = getWebsiteName(url || '')
+  post('/browser-tab', {
+    body: {
       url,
       title,
-    }),
+      name,
+    },
   })
 })
 
 browser.webRequest.onBeforeRequest.addListener(
-  (details) => {
-    // console.log(details)
-    // console.log(details.requestBody)
-  },
+  details => request.handle(details),
   { urls: ['<all_urls>'] },
   ['requestBody'],
 )

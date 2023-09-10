@@ -23,6 +23,7 @@ specifiers:
   jsdom: ^21.1.2
   kolorist: ^1.8.0
   lint-staged: ^13.2.2
+  minimatch: ^9.0.3
   npm-run-all: ^4.1.5
   rimraf: ^4.4.1
   simple-git-hooks: ^2.8.1
@@ -38,6 +39,9 @@ specifiers:
   web-ext: ^7.6.2
   webext-bridge: ^6.0.1
   webextension-polyfill: ^0.10.0
+
+dependencies:
+  minimatch: 9.0.3
 
 devDependencies:
   '@antfu/eslint-config': 0.36.0_x243x5ndcjz7oaxh6fnphb2y6q
@@ -1701,7 +1705,6 @@ packages:
 
   /balanced-match/1.0.2:
     resolution: {integrity: sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==}
-    dev: true
 
   /base64-js/1.5.1:
     resolution: {integrity: sha512-AKpaYlHn8t4SVbOHCy+b5+KKgvR4vrsD8vbvrbiQJps7fKDTkjkDry6ji0rUJjC0kzbNePLwzxq8iypo41qeWA==}
@@ -1763,7 +1766,6 @@ packages:
     resolution: {integrity: sha512-XnAIvQ8eM+kC6aULx6wuQiwVsnzsi9d3WxzV3FpWTGA19F621kwdbsAcFKXgKUHZWsy+mY6iL1sHTxWEFCytDA==}
     dependencies:
       balanced-match: 1.0.2
-    dev: true
 
   /braces/3.0.2:
     resolution: {integrity: sha512-b8um+L1RzM3WDSzvhm6gIz1yfTbBt6YTlcEKAvsmqCZZFw46z626lVj9j1yEPW33H5H+lBQpZMP1k8l+78Ha0A==}
@@ -4758,7 +4760,6 @@ packages:
     engines: {node: '>=16 || 14 >=14.17'}
     dependencies:
       brace-expansion: 2.0.1
-    dev: true
 
   /minimist/1.2.8:
     resolution: {integrity: sha512-2yyAR8qBkN3YuheJanUpWC5U3bb5osDywNB8RzDVlDwDHbocAJveqqj1u8+SVD7jkWT4yvsHCpWqqWqAxb0zCA==}

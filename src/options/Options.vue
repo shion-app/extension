@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { sendMessage } from 'webext-bridge/options'
-const port = ref(4040)
+import { port } from '~/logic/storage'
 
 watch(port, () => {
   sendMessage('change-port', {
     port: port.value,
   }, 'background')
+}, {
+  immediate: true,
 })
 </script>
 

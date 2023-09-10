@@ -28,6 +28,9 @@
     "postinstall": "simple-git-hooks",
     "typecheck": "tsc --noEmit"
   },
+  "dependencies": {
+    "minimatch": "^9.0.3"
+  },
   "devDependencies": {
     "@antfu/eslint-config": "^0.36.0",
     "@ffflorian/jszip-cli": "^3.4.1",
