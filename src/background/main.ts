@@ -14,7 +14,10 @@ if (import.meta.hot) {
 // see shim.d.ts for type declaration
 browser.tabs.onActivated.addListener(async ({ tabId }) => {
   const { url, title } = await browser.tabs.get(tabId)
-  const name = getWebsiteName(url || '')
+  if (!url)
+    return
+
+  const name = getWebsiteName(url)
   post('/browser-tab', {
     body: {
       url,
