@@ -19,11 +19,9 @@ browser.tabs.onActivated.addListener(async ({ tabId }) => {
 
   const name = getWebsiteName(url)
   post('/browser-tab', {
-    body: {
-      url,
-      title,
-      name,
-    },
+    url,
+    title,
+    name,
   })
 })
 
