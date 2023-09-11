@@ -13,6 +13,7 @@ export async function getManifest() {
     name: pkg.name,
     version: pkg.version,
     description: pkg.description,
+    homepage_url: 'https://github.com/shion-app/extension',
     action: {
       default_icon: './assets/icon.png',
       default_popup: './dist/popup/index.html',

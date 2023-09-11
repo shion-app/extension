@@ -2,7 +2,7 @@
   "name": "shion-extension",
   "version": "0.1.0",
   "private": true,
-  "description": "",
+  "description": "Communicate with the shion app to send browser data.同shion应用通信发送浏览器数据",
   "scripts": {
     "dev": "npm run clear && cross-env NODE_ENV=development run-p dev:*",
     "dev-firefox": "npm run clear && cross-env NODE_ENV=development EXTENSION=firefox run-p dev:*",
