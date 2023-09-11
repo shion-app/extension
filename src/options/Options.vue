@@ -13,7 +13,7 @@ watch(port, () => {
 
 <template>
   <main px-8 py-4>
-    <img src="/assets/icon.png" alt="logo" width="96" height="96" mb-4>
+    <img src="../assets/icon.png" alt="logo" width="96" height="96" mb-4>
     <a-form
       autocomplete="off"
       :colon="false"
