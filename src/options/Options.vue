@@ -12,8 +12,15 @@ watch(port, () => {
 </script>
 
 <template>
-  <main px-4 py-10 text-4>
-    <span>port</span>
-    <input v-model="port" type="number">
+  <main px-8 py-4>
+    <img src="/assets/icon.png" alt="logo" width="96" height="96" mb-4>
+    <a-form
+      autocomplete="off"
+      :colon="false"
+    >
+      <a-form-item name="port" label="port">
+        <a-input-number v-model:value="port" />
+      </a-form-item>
+    </a-form>
   </main>
 </template>

@@ -5,13 +5,12 @@ function openOptionsPage() {
 </script>
 
 <template>
-  <main class="w-[300px] px-4 py-5 text-center text-gray-700">
-    <Logo />
-    <div>Popup</div>
-    <SharedSubtitle />
-
-    <button class="btn mt-2" @click="openOptionsPage">
-      Open Options
-    </button>
+  <main p-2 class="min-w-[180px]" text-4>
+    <div>shion-extension</div>
+    <a-divider class="my-2!" />
+    <div flex>
+      <div flex-1 />
+      <div cursor-pointer i-mdi:cog title="setting" @click="openOptionsPage" />
+    </div>
   </main>
 </template>

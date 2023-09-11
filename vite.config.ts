@@ -9,6 +9,8 @@ import IconsResolver from 'unplugin-icons/resolver'
 import Components from 'unplugin-vue-components/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 import UnoCSS from 'unocss/vite'
+import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers'
+
 import { isDev, port, r } from './scripts/utils'
 import packageJson from './package.json'
 
@@ -47,6 +49,9 @@ export const sharedConfig: UserConfig = {
         // auto import icons
         IconsResolver({
           prefix: '',
+        }),
+        AntDesignVueResolver({
+          importStyle: 'less',
         }),
       ],
     }),
