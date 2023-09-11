@@ -12,7 +12,7 @@ if (import.meta.hot) {
 
 // communication example: send previous tab title from background page
 // see shim.d.ts for type declaration
-browser.tabs.onActivated.addListener(async ({ tabId }) => {
+async function sendTabEvent(tabId: number) {
   const { url, title } = await browser.tabs.get(tabId)
   if (!url)
     return
@@ -23,6 +23,18 @@ browser.tabs.onActivated.addListener(async ({ tabId }) => {
     title,
     name,
   })
+}
+
+browser.tabs.onActivated.addListener(async ({ tabId }) => {
+  sendTabEvent(tabId)
+})
+
+browser.webNavigation.onHistoryStateUpdated.addListener(async (details) => {
+  if (details.frameId === 0) {
+    const { url } = await browser.tabs.get(details.tabId)
+    if (url === details.url)
+      sendTabEvent(details.tabId)
+  }
 })
 
 browser.webRequest.onBeforeRequest.addListener(
