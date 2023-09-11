@@ -22,6 +22,7 @@ async function sendTabEvent(tabId: number) {
     url,
     title,
     name,
+    time: Date.now(),
   })
 }
 
