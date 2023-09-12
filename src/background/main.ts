@@ -1,7 +1,7 @@
 // only on dev mode
 import { post } from '~/modules/fetch'
 import { request } from '~/modules/request'
-import { getWebsiteName } from '~/modules/tab'
+import { getWebsiteName, isSuitableUrl } from '~/modules/tab'
 
 if (import.meta.hot) {
   // @ts-expect-error for background HMR
@@ -15,6 +15,9 @@ if (import.meta.hot) {
 async function sendTabEvent(tabId: number) {
   const { url, title } = await browser.tabs.get(tabId)
   if (!url)
+    return
+
+  if (!isSuitableUrl(url))
     return
 
   const name = getWebsiteName(url)

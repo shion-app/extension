@@ -54,3 +54,9 @@ export function getWebsiteName(url: string) {
       return name
   }
 }
+
+const filter = ['{http,https}://**', 'file:///**']
+
+export function isSuitableUrl(url: string) {
+  return filter.some(pattern => minimatch(url, pattern))
+}

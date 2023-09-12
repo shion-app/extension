@@ -1,6 +1,6 @@
 import { minimatch } from 'minimatch'
 import { describe, expect, it } from 'vitest'
-import { getWebsiteName, tabList } from '~/modules/tab'
+import { getWebsiteName, isSuitableUrl, tabList } from '~/modules/tab'
 
 function testPattern(test: string[], pattern: string[]) {
   expect(test.every(url => pattern.some(host => minimatch(url, host)))).toBe(true)
@@ -11,6 +11,13 @@ function testName(test: string[], name: string) {
 }
 
 describe('tab', () => {
+  it('need to be recorded', () => {
+    expect(isSuitableUrl('https://www.google.com/')).toBe(true)
+    expect(isSuitableUrl('http://www.google.com/')).toBe(true)
+    expect(isSuitableUrl('file:///C:/Program%20Files/HP/Documentation/common_docs/eula/817678-101.html')).toBe(true)
+    expect(isSuitableUrl('chrome://history/')).toBe(false)
+  })
+
   it('bilibili', () => {
     const { pattern } = tabList.bilibili
     const test = [
