@@ -1,4 +1,5 @@
 // only on dev mode
+import { onMessage } from 'webext-bridge/background'
 import { post } from '~/modules/fetch'
 import { request } from '~/modules/request'
 import { getWebsiteName, isSuitableUrl } from '~/modules/tab'
@@ -10,10 +11,16 @@ if (import.meta.hot) {
   import('./contentScriptHMR')
 }
 
+interface Tab {
+  url?: string
+  title?: string
+  time?: number
+}
+
 // communication example: send previous tab title from background page
 // see shim.d.ts for type declaration
-async function sendTabEvent(tabId: number) {
-  const { url, title } = await browser.tabs.get(tabId)
+function sendTabEvent(tab: Tab) {
+  const { url, title, time } = tab
   if (!url)
     return
 
@@ -25,20 +32,59 @@ async function sendTabEvent(tabId: number) {
     url,
     title,
     name,
-    time: Date.now(),
+    time,
   })
 }
 
 browser.tabs.onActivated.addListener(async ({ tabId }) => {
-  sendTabEvent(tabId)
+  const { url, title } = await browser.tabs.get(tabId)
+  sendTabEvent({
+    url,
+    title,
+    time: Date.now(),
+  })
 })
 
-browser.webNavigation.onHistoryStateUpdated.addListener(async (details) => {
-  if (details.frameId === 0) {
-    const { url } = await browser.tabs.get(details.tabId)
-    if (url === details.url)
-      sendTabEvent(details.tabId)
-  }
+let blurred = false
+
+onMessage('focus', async () => {
+  if (!blurred)
+    return
+
+  blurred = false
+
+  const [tab] = await browser.tabs.query({
+    active: true,
+  })
+  sendTabEvent({
+    url: tab.url,
+    title: tab.title,
+    time: Date.now(),
+  })
+})
+
+let previousTab = {} as Tab
+
+onMessage('blur', () => {
+  blurred = true
+  sendTabEvent(previousTab)
+  previousTab = {}
+})
+
+browser.tabs.onUpdated.addListener(async (_, info, tab) => {
+  if (!tab.active)
+    return
+
+  if (info.url)
+    sendTabEvent(previousTab)
+
+  const { url, title } = tab
+
+  if (previousTab.time)
+    Object.assign(previousTab, { url, title })
+
+  else
+    previousTab = { url, title, time: Date.now() }
 })
 
 browser.webRequest.onBeforeRequest.addListener(

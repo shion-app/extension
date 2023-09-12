@@ -5,5 +5,7 @@ declare module 'webext-bridge' {
     // define message protocol types
     // see https://github.com/antfu/webext-bridge#type-safe-protocols
     'change-port': { port: number } 
+    'focus': {  }
+    'blur': {  }
   }
 }

@@ -2,6 +2,8 @@
 // (() => {
 //   console.info('[vitesse-webext] Hello world from content script')
 
+import { sendMessage } from 'webext-bridge/content-script'
+
 //   // mount component to context window
 //   const container = document.createElement('div')
 //   container.id = __NAME__
@@ -17,3 +19,7 @@
 //   setupApp(app)
 //   app.mount(root)
 // })()
+
+window.addEventListener('focus', () => sendMessage('focus', {}, 'background'))
+
+window.addEventListener('blur', () => sendMessage('blur', {}, 'background'))
