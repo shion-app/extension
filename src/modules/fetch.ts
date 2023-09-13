@@ -6,6 +6,10 @@ onMessage('change-port', (v) => {
   port = v.data.port
 })
 
+export function get(url: string) {
+  return fetch(`http://localhost:${port}${url}`).then(i => i.json())
+}
+
 export function post(url: string, data: object) {
   return fetch(`http://localhost:${port}${url}`, {
     method: 'POST',

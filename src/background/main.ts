@@ -1,6 +1,6 @@
 // only on dev mode
 import { onMessage } from 'webext-bridge/background'
-import { post } from '~/modules/fetch'
+import { get, post } from '~/modules/fetch'
 import { request } from '~/modules/request'
 import { getWebsiteName, isSuitableUrl } from '~/modules/tab'
 
@@ -17,9 +17,24 @@ interface Tab {
   time?: number
 }
 
+let browserPath = ''
+
+function getBrowserPath(): Promise<{ path: string }> {
+  return get('/getBrowserPath')
+}
+
+async function init() {
+  browserPath = (await getBrowserPath()).path
+}
+
+init()
+
 // communication example: send previous tab title from background page
 // see shim.d.ts for type declaration
 function sendTabEvent(tab: Tab) {
+  if (!browserPath)
+    return
+
   const { url, title, time } = tab
   if (!url)
     return
@@ -28,11 +43,12 @@ function sendTabEvent(tab: Tab) {
     return
 
   const name = getWebsiteName(url)
-  post('/browser-tab', {
+  post('/browserTab', {
     url,
     title,
     name,
     time,
+    path: browserPath,
   })
 }
 
